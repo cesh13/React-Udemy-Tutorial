@@ -1,8 +1,10 @@
-import React from 'react';
+import React, {useState} from 'react';
 import './NewExpense.css'
 import ExpenseForm from './ExpenseForm';
 
 const NewExpense = (props) =>{
+
+    const [formVisiblity, setFormVisibility] = useState(false);
 
     const saveExpenseDataHandler = (enteredExpenseData) => {
         const expenseData = {
@@ -11,11 +13,23 @@ const NewExpense = (props) =>{
         };
 
         props.onAddExpense(expenseData);
+        changeFormVisibilityHandler();
         // console.log(expenseData);
     }
 
+    const changeFormVisibilityHandler = () => {
+        setFormVisibility(formVisibility =>{
+            console.log(formVisiblity)
+            return !formVisiblity;
+        });
+    }
+
+    const visibleForm = <ExpenseForm onSaveExpenseData={saveExpenseDataHandler} onFormCancel={changeFormVisibilityHandler}/>;
+    const nonVisibleForm = <button onClick={changeFormVisibilityHandler}>New Expense</button>
+
     return <div className="new-expense">
-        <ExpenseForm onSaveExpenseData={saveExpenseDataHandler}/>
+        {formVisiblity ? visibleForm : nonVisibleForm}
+        {/* <ExpenseForm onSaveExpenseData={saveExpenseDataHandler}/> */}
     </div>
 }
 
